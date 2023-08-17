@@ -12,7 +12,10 @@ function PostApi(data) {
 }
 
 function GetApi() {
-  return fetch(`${PORT}api/getproposal`).then((data) =>
+  return fetch(`${PORT}api/getvendorproposal`,{
+    headers: { "Authorization":localStorage.getItem("headers")}
+  })
+  .then((data) =>
     data.json()
   );
 }
