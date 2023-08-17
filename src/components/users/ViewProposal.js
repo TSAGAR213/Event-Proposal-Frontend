@@ -12,11 +12,11 @@ export default function ViewProposal() {
     const { id } = useParams()
     console.log(id)
     const navigate = useNavigate();
-
+    localStorage.setItem("selectedProposal",false)
     const [proposal, setProposal] = useState([]);
 
     const loadData = async () => {
-
+        
         let response = await fetch(`${PORT}api/getproposal/${id}`)
         response = await response.json();
         // console.log(response.data)
