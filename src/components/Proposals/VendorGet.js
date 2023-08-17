@@ -82,8 +82,8 @@ function VendorGet() {
                 </div>
                 <div className="border">
                   <div className="paddin">
-                    <p className="bottom">Event Type</p>
-                    <p className="zero-margin">Marriage</p>
+                    <p className="bottom">Budget</p>
+                    <p className="zero-margin">{data.Budget}</p>
                   </div>
                 </div>
 
