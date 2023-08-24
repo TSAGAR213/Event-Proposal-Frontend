@@ -6,6 +6,10 @@ import "./vendor-sign-in.css"
 import { useNavigate } from "react-router-dom";
 import { PORT } from "../Proposals/Api_call";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 const VendorSignIn = () => {
     let navigate=useNavigate()
     const [data, setFormValues] = useState({});
@@ -48,7 +52,8 @@ const VendorSignIn = () => {
                 password: data.password
             }).then((res) => {
                 if ("password not matching" === res.data) {
-                    alert("Incorrect password")
+                    //alert("Incorrect password")
+                    toast.error("Incorrect password",{position:"top-center"})
                 } else {
                     alert(`${JSON.stringify(data.email.split("@")[0])} sucessfully login`)
                     localStorage.setItem("headers",res.data.token)
@@ -146,6 +151,7 @@ const VendorSignIn = () => {
                                         </form>
                                     )}
                                 </div>
+                                <ToastContainer/>
                                 <div className="tab-content">
                                     <UserSignIn />
                                 </div>

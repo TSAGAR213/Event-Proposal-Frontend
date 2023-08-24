@@ -10,24 +10,26 @@ import EventContext from "../users/context/EventContext";
 
 function VendorGet() {
   let api_update = useContext(EventContext);
+  let formHandling=useContext(EventContext);
+ 
   let navigate = useNavigate();
   let [sample, setSample] = useState(false);
   let [propose, setPropose] = useState([]);
   useEffect(() => {
     GetApi().then((data) => {
-      console.log(data.data);
       setPropose(data.data);
-      if(!localStorage.getItem('headers') && !localStorage.getItem('vendorlogin')){
-            navigate('/')
-        }
+      if (
+        !localStorage.getItem("headers") &&
+        !localStorage.getItem("vendorlogin")
+      ) {
+        navigate("/");
+      }
     });
-     
-
   }, [sample]);
   let rev = propose.reverse();
   return (
-    <>
-      <Navbar/>
+    <div id="all-container">
+      <Navbar />
       <div id="pro-container">
         <div id="bar">
           <h5>Proposals</h5>
@@ -39,6 +41,16 @@ function VendorGet() {
             id="popup"
             onClick={() => {
               api_update.Updation({ id: "", type: "POST" });
+              formHandling.EventsUpdate("");
+              formHandling.FoodpreferancesUpdate("");
+              formHandling.DescriptionUpdate("");
+              formHandling.ToUpdate("");
+              formHandling.FromUpdate("");
+              formHandling.BudgetUpdate("");
+              formHandling.EventTypeUpdate("");
+              formHandling.ProposalTypeUpdate("");
+              formHandling.PlaceofEventUpdate("");
+              formHandling.EventNameUpdate("");
               navigate("/createproposal");
             }}
           >
@@ -94,6 +106,16 @@ function VendorGet() {
                       alt="editicon"
                       onClick={() => {
                         api_update.Updation({ id: data._id, type: "PUT" });
+                        formHandling.EventsUpdate(data.Event_Name);
+                        formHandling.FoodpreferancesUpdate(data.Food_preferances);
+                        formHandling.DescriptionUpdate(data.Description);
+                        formHandling.ToUpdate(data.To_date);
+                        formHandling.FromUpdate(data.From_date);
+                        formHandling.BudgetUpdate(data.Budget);
+                        formHandling.EventTypeUpdate(data.Event_type);
+                        formHandling.ProposalTypeUpdate(data.Proposal_type);
+                        formHandling.PlaceofEventUpdate(data.Place_of_event);
+                        formHandling.EventNameUpdate(data.Event_Name);
                         navigate("/createproposal");
                       }}
                     />
@@ -118,7 +140,7 @@ function VendorGet() {
           );
         })}
       </div>
-    </>
+    </div>
   );
 }
 

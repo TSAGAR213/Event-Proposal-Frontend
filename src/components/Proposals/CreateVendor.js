@@ -3,12 +3,12 @@ import "./sample.css";
 import { PostApi, PutApi } from "./Api_call";
 import { useNavigate } from "react-router-dom";
 
-
 import EventContext from "../users/context/EventContext";
 
 function CreateVendor() {
   let api_update = useContext(EventContext);
 
+  let formHandling = useContext(EventContext);
   let navigate = useNavigate();
   const [file, setFile] = useState();
   const [showImage, setShowImage] = useState(false);
@@ -30,71 +30,68 @@ function CreateVendor() {
     return;
   }
 
-  const [EventName, setEventName] = useState("");
-  const [PlaceofEvent, setPlaceofEvent] = useState("");
-  const [ProposalType, setProposalType] = useState("");
-  const [EventType, setEventType] = useState("");
-  const [Budget, setBudget] = useState("");
-  const [From, setFrom] = useState("");
-  const [To, setTo] = useState("");
-  const [Description, setDescription] = useState("");
   const [Image, setImage] = useState({});
-  const [Foodpreferances, setFoodpreferances] = useState("");
-  const [Events, setEvents] = useState("");
+ 
   return (
     <div id="component-container">
       {/* <Navbar/> */}
       <div id="form-contain">
-       
         <div id="hder">
-        <h2 id="h2">Create Proposal</h2>
-        <h1 
-        id="x"
-        onClick={()=>{
-          navigate("/getproposal")
-        }}
-        >X</h1>
+          <h2 id="h2">Create Proposal</h2>
+          <h1
+            id="x"
+            onClick={() => {
+              navigate("/getproposal");
+            }}
+          >
+            X
+          </h1>
         </div>
-       
 
-        <hr style={{margin:"0px"}} />
+        <hr style={{ margin: "0px" }} />
         <form
           encType="multipart/form-data"
           onSubmit={(e) => {
             e.preventDefault();
-            let data = { EventName, Budget };
+            let data = {
+              EventName: formHandling.EventName,
+              Budget: formHandling.Budget,
+            };
             let error = Validation(data);
             if (error) {
               alert(error);
             } else {
               let formdata = new FormData();
-              formdata.append("Event_Name", EventName);
-              formdata.append("Place_of_event", PlaceofEvent);
-              formdata.append("Proposal_type", ProposalType);
-              formdata.append("Event_type", EventType);
-              formdata.append("Budget", Budget);
-              formdata.append("From_date", From);
-              formdata.append("To_date", To);
-              formdata.append("Description", Description);
+              formdata.append("Event_Name", formHandling.EventName);
+              formdata.append("Place_of_event", formHandling.PlaceofEvent);
+              formdata.append("Proposal_type", formHandling.ProposalType);
+              formdata.append("Event_type", formHandling.EventType);
+              formdata.append("Budget", formHandling.Budget);
+              formdata.append("From_date", formHandling.From);
+              formdata.append("To_date", formHandling.To);
+              formdata.append("Description", formHandling.Description);
               formdata.append("Images", Image);
-              formdata.append("Food_preferances", Foodpreferances);
-              formdata.append("Events", Events);
+              formdata.append("Food_preferances", formHandling.Foodpreferances);
+              formdata.append("Events", formHandling.Events);
 
               if (api_update.apiType["type"] === "PUT") {
-                PutApi(formdata, api_update.apiType["id"]).then((data) => {
-                  console.log(data);
-                  navigate("/getproposal");
-                })
-                .catch(e=>{
-                  console.log(e)
-                })
+                PutApi(formdata, api_update.apiType["id"])
+                  .then((data) => {
+                    console.log(data);
+                    navigate("/getproposal");
+                  })
+                  .catch((e) => {
+                    console.log(e);
+                  });
               } else if (api_update.apiType["type"] === "POST") {
-                PostApi(formdata).then((data) => {
-                  console.log(data);
-                  navigate("/getproposal");
-                }).catch(e=>{
-                  console.log(e)
-                })
+                PostApi(formdata)
+                  .then((data) => {
+                    console.log(data);
+                    navigate("/getproposal");
+                  })
+                  .catch((e) => {
+                    console.log(e);
+                  });
               }
             }
           }}
@@ -108,8 +105,9 @@ function CreateVendor() {
                   type="text"
                   id="event-name"
                   placeholder="Name"
+                  value={formHandling.EventName}
                   onChange={(e) => {
-                    setEventName(e.target.value);
+                    formHandling.EventNameUpdate(e.target.value);
                   }}
                   required
                 />
@@ -121,8 +119,9 @@ function CreateVendor() {
                 <br />
                 <select
                   onChange={(e) => {
-                    setPlaceofEvent(e.target.value);
+                    formHandling.PlaceofEventUpdate(e.target.value);
                   }}
+                  value={formHandling.PlaceofEvent}
                   required
                 >
                   <option>Select</option>
@@ -138,8 +137,9 @@ function CreateVendor() {
                 <br />
                 <select
                   onChange={(e) => {
-                    setProposalType(e.target.value);
+                    formHandling.ProposalTypeUpdate(e.target.value);
                   }}
+                  value={formHandling.ProposalType}
                   required
                 >
                   <option>Select</option>
@@ -155,8 +155,9 @@ function CreateVendor() {
                 <br />
                 <select
                   onChange={(e) => {
-                    setEventType(e.target.value);
+                    formHandling.EventTypeUpdate(e.target.value);
                   }}
+                  value={formHandling.EventType}
                   required
                 >
                   <option>Select</option>
@@ -173,8 +174,9 @@ function CreateVendor() {
                   type="text"
                   placeholder="00000"
                   onChange={(e) => {
-                    setBudget(e.target.value);
+                    formHandling.BudgetUpdate(e.target.value);
                   }}
+                  value={formHandling.Budget}
                   required
                 />
               </div>
@@ -185,8 +187,9 @@ function CreateVendor() {
                 <input
                   type="date"
                   onChange={(e) => {
-                    setFrom(e.target.value);
+                    formHandling.FromUpdate(e.target.value);
                   }}
+                  value={formHandling.From}
                   required
                 />
               </div>
@@ -197,8 +200,9 @@ function CreateVendor() {
                 <input
                   type="date"
                   onChange={(e) => {
-                    setTo(e.target.value);
+                    formHandling.ToUpdate(e.target.value);
                   }}
+                  value={formHandling.To}
                   required
                 />
               </div>
@@ -212,8 +216,9 @@ function CreateVendor() {
                   placeholder="Description"
                   id="Description"
                   onChange={(e) => {
-                    setDescription(e.target.value);
+                    formHandling.DescriptionUpdate(e.target.value);
                   }}
+                  value={formHandling.Description}
                   required
                 />
               </div>
@@ -244,8 +249,9 @@ function CreateVendor() {
                   placeholder="Preferances"
                   id="Preferances"
                   onChange={(e) => {
-                    setFoodpreferances(e.target.value);
+                    formHandling.FoodpreferancesUpdate(e.target.value);
                   }}
+                  value={formHandling.Foodpreferances}
                   required
                 />
               </div>
@@ -257,8 +263,9 @@ function CreateVendor() {
                   type="text"
                   placeholder="Preferances"
                   id="events"
+                  value={formHandling.Events}
                   onChange={(e) => {
-                    setEvents(e.target.value);
+                    formHandling.EventsUpdate(e.target.value);
                   }}
                   required
                 />
@@ -266,7 +273,7 @@ function CreateVendor() {
             </section>
           </div>
           <hr />
-          <button  id="submit" type="submit">
+          <button id="submit" type="submit">
             POST
           </button>
         </form>
