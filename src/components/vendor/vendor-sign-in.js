@@ -6,6 +6,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./vendor-sign-in.css"
 import { useNavigate } from "react-router-dom";
+import { PORT } from "../Proposals/Api_call";
+
 
 const VendorSignIn = () => {
     let navigate=useNavigate()
@@ -44,7 +46,7 @@ const VendorSignIn = () => {
         const fun = handleErrors(e)
         if (fun) {
             setError("")
-            await axios.post("http://localhost:8080/api/vendorlogin", {
+            await axios.post(`${PORT}api/vendorlogin`, {
                 email: data.email,
                 password: data.password
             }).then((res) => {
