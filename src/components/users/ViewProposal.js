@@ -12,7 +12,7 @@ export default function ViewProposal() {
     const { id } = useParams()
     console.log(id)
     const navigate = useNavigate();
-    localStorage.setItem("selectedProposal",false)
+    //localStorage.setItem("selectedProposal",false)
     const [proposal, setProposal] = useState([]);
 
     const loadData = async () => {

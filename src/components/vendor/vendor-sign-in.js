@@ -2,13 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import VendorSignUp from "./vendor-sign-up";
 import UserSignIn from "../user/user-sign-in";
-import "./vendor-sign-in.css"
-import { useNavigate } from "react-router-dom";
-import { PORT } from "../Proposals/Api_call";
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import "./vendor-sign-in.css"
+import { useNavigate } from "react-router-dom";
 
 const VendorSignIn = () => {
     let navigate=useNavigate()
@@ -47,15 +44,21 @@ const VendorSignIn = () => {
         const fun = handleErrors(e)
         if (fun) {
             setError("")
-            await axios.post(`${PORT}api/vendorlogin`, {
+            await axios.post("http://localhost:8080/api/vendorlogin", {
                 email: data.email,
                 password: data.password
             }).then((res) => {
                 if ("password not matching" === res.data) {
-                    //alert("Incorrect password")
-                    toast.error("Incorrect password",{position:"top-center"})
+                  //  alert("Incorrect password")
+                  toast.error("Incorrect password",{
+                    position : "top-center"
+                 })
+                  
                 } else {
-                    alert(`${JSON.stringify(data.email.split("@")[0])} sucessfully login`)
+                   // alert(`${JSON.stringify(data.email.split("@")[0])} sucessfully login`)
+                   toast.success("successfully LoggedIn",{
+                    position : "top-center"
+                })
                     localStorage.setItem("headers",res.data.token)
                     localStorage.setItem("userdata",JSON.stringify(res.data.userdata))
                     localStorage.setItem("vendorlogin",true)
@@ -149,9 +152,10 @@ const VendorSignIn = () => {
                                                 SIGN IN
                                             </button>
                                         </form>
+                                        
                                     )}
+                                    <ToastContainer/>
                                 </div>
-                                <ToastContainer/>
                                 <div className="tab-content">
                                     <UserSignIn />
                                 </div>
